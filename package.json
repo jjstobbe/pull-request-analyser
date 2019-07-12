@@ -1,0 +1,27 @@
+{
+  "name": "pull-request-analyser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jjstobbe/pull-request-analyser.git"
+  },
+  "author": "Jack Stobbe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jjstobbe/pull-request-analyser/issues"
+  },
+  "homepage": "https://github.com/jjstobbe/pull-request-analyser#readme",
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "event-stream": "^4.0.1",
+    "follow-redirects": "^1.7.0",
+    "octonode": "^0.9.5",
+    "simple-git": "^1.120.0",
+    "unzip": "^0.1.11"
+  }
+}
