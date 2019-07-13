@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon ./src/server/server.js",
+    "start-front-end": "react-scripts start",
+    "build-front-end": "react-scripts build"
   },
   "repository": {
     "type": "git",
@@ -15,12 +17,36 @@
   "bugs": {
     "url": "https://github.com/jjstobbe/pull-request-analyser/issues"
   },
-  "homepage": "https://github.com/jjstobbe/pull-request-analyser#readme",
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "dependencies": {
+    "axios": "^0.19.0",
     "dotenv": "^8.0.0",
     "event-stream": "^4.0.1",
     "follow-redirects": "^1.7.0",
+    "koa": "^2.7.0",
+    "koa-mount": "^4.0.0",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "nodemon": "^1.19.1",
     "octonode": "^0.9.5",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "3.0.1",
     "simple-git": "^1.120.0",
     "unzip": "^0.1.11"
   }

@@ -1,8 +1,8 @@
 require('dotenv').config()
 
-var PullRequestService =  require('./src/PullRequestService')
-var GithubService = require('./src/GithubService')
-var CodeAnalysisService = require('./src/CodeAnalysisService')
+var PullRequestService =  require('./src/server/PullRequestService')
+var GithubService = require('./src/server/GithubService')
+var CodeAnalysisService = require('./src/server/CodeAnalysisService')
 
 var arguments = process.argv;
 if (arguments.length != 3)
