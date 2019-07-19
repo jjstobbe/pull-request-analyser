@@ -16,6 +16,7 @@ async function CloneRepository(domain, repo)
     }
     else
     {
+        console.log(`Cloning repository ${domain}/${repo}..`)
         await git(repoDirectory).silent(false).clone(`https://${GITHUB_USERNAME}:${GITHUB_AUTH_TOKEN}@github.com/${domain}/${repo}`);
     }
 }

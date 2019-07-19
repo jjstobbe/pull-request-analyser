@@ -4,15 +4,22 @@ var client = github.client(GITHUB_AUTH_TOKEN);
 
 async function GetPullRequest(pullRequestUrl)
 {
-    var { domain, repo, pullRequestNumber } = ParsePullRequestUrl(pullRequestUrl);
-    var pullRequest = await client
-        .pr(`${domain}/${repo}`, pullRequestNumber)
-        .infoAsync();
+    const { domain, repo, pullRequestNumber } = ParsePullRequestUrl(pullRequestUrl);
+    
+    let pullRequest = []
+    try {
+        pullRequest = await client
+            .pr(`${domain}/${repo}`, pullRequestNumber)
+            .infoAsync();
+    } catch (e) {
+        console.log("Trouble getting pull request", e)
+        return;
+    }
 
     if (pullRequest.length != 2)
     {
         console.log("Trouble getting pull request")
-        process.exit(1)
+        return;
     }
 
     return pullRequest[0];

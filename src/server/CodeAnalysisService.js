@@ -30,7 +30,7 @@ async function RunAnalysis(repo, fileNames)
     await execute(`${exeFilePath} ${repoDirectory}\\${repo}\\${repo}.sln --output=${resharperDirectoryPath}\\analysis-result.xml`);
     
     await trimXMLResult(fileNames);
-    await sortXMLResult();
+    return await sortXMLResult();
 }
 
 
@@ -76,7 +76,7 @@ async function unzipResharper() {
 async function trimXMLResult(fileNames) {
     console.log("Trimming result..")
 
-    const sanitizedFileNames = fileNames.map(name => name.replace("/","\\"));
+    const sanitizedFileNames = fileNames.map(name => name.replace(/\//g, "\\"));
     const outputStream = fs.createWriteStream(`${resharperDirectoryPath}\\trimmed-analysis-result.xml`, { flags:'a' })
 
     return new Promise((resolve, reject) => {
@@ -110,9 +110,17 @@ async function sortXMLResult() {
         .toString('utf-8')
         .split("\n")
 
+    unsortedFile = unsortedFile.map(line => {
+        return {
+            'fileName': line.substring(line.indexOf("File=\"") + 6, line.indexOf("Offset=") - 2),
+            'message': line.substring(line.indexOf("Message=\"") + 9, line.indexOf("/>") - 2),
+            'lineNumber': parseInt(line.substring(line.indexOf("Line=\"") + 6, line.indexOf("Message=") - 2)),
+        }
+    }).filter(line => line.message != "" && line.lineNumber != null)
+
     unsortedFile.sort((lineA, lineB) => {
-        const fileNameA = lineA.substring(lineA.indexOf("File=\"") + 6, lineA.indexOf("Offset=") - 2)
-        const fileNameB = lineB.substring(lineB.indexOf("File=\"") + 6, lineB.indexOf("Offset=") - 2)
+        const fileNameA = lineA.fileName
+        const fileNameB = lineB.fileName
 
         const nameComparison = fileNameA.localeCompare(fileNameB)
 
@@ -120,8 +128,8 @@ async function sortXMLResult() {
             return nameComparison
         }
         
-        const lineNumberA = parseInt(lineA.substring(lineA.indexOf("Line=\"") + 6, lineA.indexOf("Message=") - 2))
-        const lineNumberB = parseInt(lineB.substring(lineB.indexOf("Line=\"") + 6, lineB.indexOf("Message=") - 2))
+        const lineNumberA = lineA.lineNumber
+        const lineNumberB = lineA.lineNumber
 
         return lineNumberA - lineNumberB;
     })
@@ -129,6 +137,8 @@ async function sortXMLResult() {
     unsortedFile.forEach((line) => {
         outputStream.write(line + "\n")
     })
+
+    return unsortedFile;
 }
 
 module.exports = { RunAnalysis }
